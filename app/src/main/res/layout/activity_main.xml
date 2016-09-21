@@ -23,11 +23,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/drawer_layout">
-            <android.support.design.widget.CoordinatorLayout
+            <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/fragment_container"
-            ></android.support.design.widget.CoordinatorLayout>
+            ></FrameLayout>
 
             <android.support.design.widget.NavigationView
                     android:layout_width="240dp"
