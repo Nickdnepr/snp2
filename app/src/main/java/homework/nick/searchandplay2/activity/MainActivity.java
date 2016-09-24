@@ -20,6 +20,7 @@ import homework.nick.searchandplay2.R;
 import homework.nick.searchandplay2.events.EventToActivity;
 import homework.nick.searchandplay2.events.MEvent;
 import homework.nick.searchandplay2.fragments.SearchFragment;
+import homework.nick.searchandplay2.fragments.Testing_Fragment;
 import homework.nick.searchandplay2.utils.PlayerCommands;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -56,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
@@ -65,16 +64,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initFragments();
         fragmentContent = (FrameLayout) findViewById(R.id.fragment_container);
-        changeFragment(searchFragment);
+        changeFragment(new Testing_Fragment());
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         //-----------------------------------------------------------------
         bottomControlPanel = (LinearLayout) findViewById(R.id.pannel);
-        forwadBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_next_button);
-        perviousBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_previous_button);
-        startStopBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_pause_start_button);
+//        forwadBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_next_button);
+//        perviousBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_previous_button);
+//        startStopBottomButton = (ImageView) bottomControlPanel.findViewById(R.id.bottom_panel_pause_start_button);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomControlPanel);
-
         //-----------------------------------------------------------------
         toolbarContext = (LinearLayout) toolbar.findViewById(R.id.toolbar_context);
         toolbarContext.addView(getLayoutInflater().inflate(R.layout.toolbar_default_layout, toolbarContext, false));
@@ -85,45 +83,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_list_white_48dp);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
             public void onDrawerClosed(View view) {
-//                getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
-//                getSupportActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        startStopBottomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (playing) {
-                    EventBus.getDefault().post(new MEvent(PlayerCommands.PAUSE_COMMAND));
-                } else {
-                    EventBus.getDefault().post(new MEvent(PlayerCommands.START_COMMAND));
-                }
-            }
-        });
+
+//        startStopBottomButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (playing) {
+//                    EventBus.getDefault().post(new MEvent(PlayerCommands.PAUSE_COMMAND));
+//                } else {
+//                    EventBus.getDefault().post(new MEvent(PlayerCommands.START_COMMAND));
+//                }
+//            }
+//        });
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (extended) {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                } else {
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+
+                Log.i("bottom", "state changed to"+newState);
+//                if (extended) {
+//                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                } else {
+//                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+//                }
             }
 
             @Override
@@ -165,6 +161,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    public void openBottom(){
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        extended=true;
+    }
+
+    public void closeBottom(){
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        extended=false;
+    }
+
     private void initFragments() {
         searchFragment = new SearchFragment();
     }
@@ -177,6 +183,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        //-------
     }
 }

@@ -18,7 +18,7 @@ public class StringGenerator {
         }else {
             answer.append(seconds%60);
         }
-        Log.i("STRING_GENERATOR", "DURATION STRING IS" + answer.toString());
+//        Log.i("STRING_GENERATOR", "DURATION STRING IS" + answer.toString());
         return answer.toString();
     }
 }
